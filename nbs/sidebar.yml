@@ -1,0 +1,17 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - 00_config.settings.ipynb
+      - cli.ipynb
+      - settings.ipynb
+      - section: management
+        contents:
+          - section: commands
+            contents:
+              - management/commands/startapp.ipynb
+      - section: management
+        contents:
+          - section: commands
+            contents:
+              - management/commands/startproject.ipynb

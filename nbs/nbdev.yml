@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "litdjango"
+  site-url: "https://aaronsgithub.github.io/litdjango"
+  description: "A literate programming dialect of Django"
+  repo-branch: main
+  repo-url: "https://github.com/aaronsgithub/litdjango"
