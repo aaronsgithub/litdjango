@@ -12,4 +12,12 @@ d = { 'settings': { 'branch': 'main',
                                                                                      'litdjango/cli.py'),
                                'litdjango.cli.StartApp': ('cli.html#startapp', 'litdjango/cli.py'),
                                'litdjango.cli.StartProject': ('cli.html#startproject', 'litdjango/cli.py'),
-                               'litdjango.cli.cli': ('cli.html#cli', 'litdjango/cli.py')}}}
+                               'litdjango.cli.StartProject.handle': ('cli.html#startproject.handle', 'litdjango/cli.py'),
+                               'litdjango.cli.cli': ('cli.html#cli', 'litdjango/cli.py')},
+            'litdjango.demos.djangotutorial.config.asgi': {},
+            'litdjango.demos.djangotutorial.config.settings': {},
+            'litdjango.demos.djangotutorial.config.urls': {},
+            'litdjango.demos.djangotutorial.config.wsgi': {},
+            'litdjango.demos.djangotutorial.manage': { 'litdjango.demos.djangotutorial.manage.main': ( 'demos/djangotutorial/manage.html#main',
+                                                                                                       'litdjango/demos/djangotutorial/manage.py')},
+            'litdjango.utils': {'litdjango.utils.get_litdjango_root': ('utils.html#get_litdjango_root', 'litdjango/utils.py')}}}

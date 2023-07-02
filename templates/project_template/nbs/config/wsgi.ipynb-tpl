@@ -5,13 +5,23 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# CLI\n",
+    "# WSGI "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "_doc_ = \"\"\"\n",
+    "WSGI config for {{ project_name }} project.\n",
     "\n",
-    "> The command line interface for litdjango\n",
+    "It exposes the WSGI callable as a module-level variable named ``application``.\n",
     "\n",
-    "In order to adapt Django to a literate programming style using Jupyter notebooks, we need to\n",
-    "reimplement any builtin `django-admin` and `manage.py` cli commands which produce `.py` modules\n",
-    "into commands which produce `.ipynb` files."
+    "For more information on this file, see\n",
+    "https://docs.djangoproject.com/en/{{ docs_version }}/howto/deployment/wsgi/\n",
+    "\"\"\""
    ]
   },
   {
@@ -20,7 +30,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| default_exp cli"
+    "#| default_exp "
    ]
   },
   {
@@ -39,17 +49,14 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| export\n",
+    "#| exports\n",
     "import importlib\n",
     "import os\n",
-    "from pathlib import Path\n",
     "import sys\n",
     "\n",
     "from django.core.management import ManagementUtility, execute_from_command_line, get_commands\n",
     "from django.core.management.commands.startapp import Command as StartApp\n",
-    "from django.core.management.commands.startproject import Command as StartProject\n",
-    "\n",
-    "from litdjango.utils import LITDJANGO_ROOT"
+    "from django.core.management.commands.startproject import Command as StartProject"
    ]
   },
   {
@@ -58,14 +65,9 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| export\n",
+    "#| exports\n",
     "class StartProject(StartProject):\n",
-    "\n",
-    "    rewrite_template_suffixes = (('.py-tpl', '.py'), (('.ipynb-tpl', '.ipynb')))\n",
-    "\n",
-    "    def handle(self, **options):\n",
-    "        options[\"template\"] = str(LITDJANGO_ROOT / \"templates\" / \"project_template\")\n",
-    "        super().handle(**options)"
+    "    pass"
    ]
   },
   {
@@ -74,7 +76,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| export\n",
+    "#| exports\n",
     "class StartApp(StartApp):\n",
     "    pass"
    ]
@@ -85,7 +87,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| exporti\n",
+    "#| exports\n",
     "lit_commands = {\n",
     "    \"startapp\": StartApp(),\n",
     "    \"startproject\": StartProject()\n",
@@ -98,7 +100,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| export\n",
+    "#| exports\n",
     "class LitManagementUtility(ManagementUtility):\n",
     "\n",
     "    def __init__(self, argv=None):\n",
@@ -184,6 +186,23 @@
    ]
   },
   {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#| hide\n",
+    "import nbdev; nbdev.nbdev_export()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
    "attachments": {},
    "cell_type": "markdown",
    "metadata": {},
@@ -197,6 +216,18 @@
    "display_name": "python3",
    "language": "python",
    "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.9"
   }
  },
  "nbformat": 4,
