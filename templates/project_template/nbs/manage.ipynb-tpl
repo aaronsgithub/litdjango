@@ -1,0 +1,66 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Manage"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#| default_exp manage"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "_doc_ = \"\"\"Django's command-line utility for administrative tasks.\"\"\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "import sys\n",
+    "\n",
+    "\n",
+    "def main():\n",
+    "    \"\"\"Run administrative tasks.\"\"\"\n",
+    "    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{{ project_name }}.settings')\n",
+    "    try:\n",
+    "        from django.core.management import execute_from_command_line\n",
+    "    except ImportError as exc:\n",
+    "        raise ImportError(\n",
+    "            \"Couldn't import Django. Are you sure it's installed and \"\n",
+    "            \"available on your PYTHONPATH environment variable? Did you \"\n",
+    "            \"forget to activate a virtual environment?\"\n",
+    "        ) from exc\n",
+    "    execute_from_command_line(sys.argv)\n",
+    "\n",
+    "\n",
+    "if __name__ == '__main__':\n",
+    "    main()"
+   ]
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python"
+  },
+  "orig_nbformat": 4
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

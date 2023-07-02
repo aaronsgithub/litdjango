@@ -15,7 +15,7 @@
    "outputs": [],
    "source": [
     "_doc_ = \"\"\"\n",
-    "WSGI config for {{ project_name }} project.\n",
+    "WSGI config.\n",
     "\n",
     "It exposes the WSGI callable as a module-level variable named ``application``.\n",
     "\n",
@@ -30,33 +30,19 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| default_exp "
+    "#| default_exp config.wsgi"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| hide\n",
-    "from nbdev.showdoc import *"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "#| exports\n",
-    "import importlib\n",
+    "#| export\n",
     "import os\n",
-    "import sys\n",
     "\n",
-    "from django.core.management import ManagementUtility, execute_from_command_line, get_commands\n",
-    "from django.core.management.commands.startapp import Command as StartApp\n",
-    "from django.core.management.commands.startproject import Command as StartProject"
+    "from django.core.wsgi import get_wsgi_application"
    ]
   },
   {
@@ -65,142 +51,11 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "#| exports\n",
-    "class StartProject(StartProject):\n",
-    "    pass"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "#| exports\n",
-    "class StartApp(StartApp):\n",
-    "    pass"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "#| exports\n",
-    "lit_commands = {\n",
-    "    \"startapp\": StartApp(),\n",
-    "    \"startproject\": StartProject()\n",
-    "}"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "#| exports\n",
-    "class LitManagementUtility(ManagementUtility):\n",
+    "#| export\n",
+    "os.environ.setdefault(\"DJANGO_SETTINGS_MODULE\", \"config.settings\")\n",
     "\n",
-    "    def __init__(self, argv=None):\n",
-    "        super().__init__(argv)\n",
-    "\n",
-    "    def fetch_command(self, subcommand):\n",
-    "        \"\"\"Use lit_commands version if it exists, otherwise fallback to django commands\"\"\"\n",
-    "        try: # find a lit_command version of the command\n",
-    "            return lit_commands[subcommand]\n",
-    "        except KeyError:\n",
-    "            # Fall back to default django  if we have not defined a custom command\n",
-    "            return super().fetch_command(subcommand)"
+    "application = get_wsgi_application()"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "#| exports\n",
-    "def cli():\n",
-    "    utility = LitManagementUtility(sys.argv)\n",
-    "    utility.execute()\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "usage: litdjango startproject [-h] [--template TEMPLATE]\n",
-      "                              [--extension EXTENSIONS] [--name FILES]\n",
-      "                              [--exclude [EXCLUDE]] [--version] [-v {0,1,2,3}]\n",
-      "                              [--settings SETTINGS] [--pythonpath PYTHONPATH]\n",
-      "                              [--traceback] [--no-color] [--force-color]\n",
-      "                              name [directory]\n",
-      "\n",
-      "Help from lit django. Creates a Django project directory structure for the\n",
-      "given project name in the current directory or optionally in the given\n",
-      "directory.\n",
-      "\n",
-      "positional arguments:\n",
-      "  name                  Name of the application or project.\n",
-      "  directory             Optional destination directory\n",
-      "\n",
-      "options:\n",
-      "  -h, --help            show this help message and exit\n",
-      "  --template TEMPLATE   The path or URL to load the template from.\n",
-      "  --extension EXTENSIONS, -e EXTENSIONS\n",
-      "                        The file extension(s) to render (default: \"py\").\n",
-      "                        Separate multiple extensions with commas, or use -e\n",
-      "                        multiple times.\n",
-      "  --name FILES, -n FILES\n",
-      "                        The file name(s) to render. Separate multiple file\n",
-      "                        names with commas, or use -n multiple times.\n",
-      "  --exclude [EXCLUDE], -x [EXCLUDE]\n",
-      "                        The directory name(s) to exclude, in addition to .git\n",
-      "                        and __pycache__. Can be used multiple times.\n",
-      "  --version             Show program's version number and exit.\n",
-      "  -v {0,1,2,3}, --verbosity {0,1,2,3}\n",
-      "                        Verbosity level; 0=minimal output, 1=normal output,\n",
-      "                        2=verbose output, 3=very verbose output\n",
-      "  --settings SETTINGS   The Python path to a settings module, e.g.\n",
-      "                        \"myproject.settings.main\". If this isn't provided, the\n",
-      "                        DJANGO_SETTINGS_MODULE environment variable will be\n",
-      "                        used.\n",
-      "  --pythonpath PYTHONPATH\n",
-      "                        A directory to add to the Python path, e.g.\n",
-      "                        \"/home/djangoprojects/myproject\".\n",
-      "  --traceback           Raise on CommandError exceptions.\n",
-      "  --no-color            Don't colorize the command output.\n",
-      "  --force-color         Force colorization of the command output.\n"
-     ]
-    }
-   ],
-   "source": [
-    "!litdjango startproject --help"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "#| hide\n",
-    "import nbdev; nbdev.nbdev_export()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   },
   {
    "attachments": {},

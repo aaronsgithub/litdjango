@@ -22,6 +22,7 @@ class StartProject(StartProject):
 
     def handle(self, **options):
         options["template"] = str(LITDJANGO_ROOT / "templates" / "project_template")
+        options["extensions"] = ['py', 'txt', 'ipynb']
         super().handle(**options)
 
 # %% ../nbs/cli.ipynb 5
