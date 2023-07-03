@@ -9,7 +9,7 @@ project_name = "testproject"
 
 
 def test_export_subcommand_exists():
-    output = subprocess.run(["litdjango"], capture_output=True)
+    output = subprocess.run(["litdjango"], capture_output=True, text=True)
     assert "export" in output.stdout, output.stdout
 
 
