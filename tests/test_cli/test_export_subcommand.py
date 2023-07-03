@@ -8,6 +8,11 @@ import pytest
 project_name = "testproject"
 
 
+def test_export_subcommand_exists():
+    output = subprocess.run(["litdjango"], capture_output=True)
+    assert "export" in output.stdout, output.stdout
+
+
 def test_startproject_and_export_return_code(tmp_path):
     """Check these subcommands work then use them to create a fixture"""
     try:
