@@ -1,6 +1,8 @@
+import os
+import shutil
 import subprocess
+
 import pytest
-import json
 
 from litdjango.utils import print_notebook_contents
 
@@ -14,9 +16,15 @@ def test_startproject_return_code(tmp_path):
 
 @pytest.fixture(scope="module")
 def created_project(tmp_path_factory):
-    tmp_path = tmp_path_factory.mktemp("dir", numbered=False)
-    subprocess.check_call(["litdjango", "startproject", project_name], cwd=str(tmp_path))
-    return tmp_path / project_name
+    tmp_path = tmp_path_factory.mktemp("dir")
+    old_path = os.getcwd()
+    os.chdir(tmp_path)
+    subprocess.check_call(["litdjango", "startproject", project_name], cwd=tmp_path) 
+    try:
+        yield tmp_path / project_name
+    finally:
+        shutil.rmtree(tmp_path)
+        os.chdir(old_path)
 
 
 @pytest.mark.parametrize("path", [
@@ -27,7 +35,7 @@ def created_project(tmp_path_factory):
     "nbs/config/wsgi.ipynb",
     "nbs/config/asgi.ipynb",
     "nbs/config/urls.ipynb",
-    # f"{project_name}/"
+    f"{project_name}/"
 ])
 def test_startproject_structure(created_project, path):
     output_path = created_project / path
