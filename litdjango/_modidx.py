@@ -19,4 +19,6 @@ d = { 'settings': { 'branch': 'main',
                                'litdjango.cli.StartProject.handle': ('cli.html#startproject.handle', 'litdjango/cli.py'),
                                'litdjango.cli.cli': ('cli.html#cli', 'litdjango/cli.py')},
             'litdjango.utils': { 'litdjango.utils.get_litdjango_root': ('utils.html#get_litdjango_root', 'litdjango/utils.py'),
+                                 'litdjango.utils.get_project_config': ('utils.html#get_project_config', 'litdjango/utils.py'),
+                                 'litdjango.utils.get_project_root': ('utils.html#get_project_root', 'litdjango/utils.py'),
                                  'litdjango.utils.print_notebook_contents': ('utils.html#print_notebook_contents', 'litdjango/utils.py')}}}

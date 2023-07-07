@@ -10,6 +10,15 @@
   },
   {
    "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#|default_exp config.settings"
+   ]
+  },
+  {
+   "cell_type": "code",
    "execution_count": 1,
    "metadata": {},
    "outputs": [],

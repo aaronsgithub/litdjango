@@ -17,7 +17,7 @@ def test_startproject_and_export_return_code(tmp_path):
     """Check these subcommands work then use them to create a fixture"""
     try:
         assert subprocess.check_call(["litdjango", "startproject", project_name], cwd=tmp_path) == 0
-        assert subprocess.check_call(["python", "manage.py", "export"], cwd=tmp_path) == 0
+        assert subprocess.check_call(["litdjango", "export"], cwd=tmp_path/project_name) == 0
     finally:
         shutil.rmtree(tmp_path)
 
@@ -28,7 +28,8 @@ def exported_project(tmp_path_factory):
     old_path = os.getcwd()
     os.chdir(tmp_path)
     subprocess.check_call(["litdjango", "startproject", project_name], cwd=tmp_path) 
-    subprocess.check_call(["python", "manage.py", "export"], cwd=tmp_path)
+    os.chdir(tmp_path / project_name)
+    subprocess.check_call(["litdjango", "export"])
     try:
         yield tmp_path / project_name
     finally:
@@ -53,4 +54,4 @@ def test_new_project_renders_python_modules(exported_project, path):
 
 
 def test_manage_module(exported_project):
-    assert subprocess.check_call(["python", "manage.py", "check"], cwd=(exported_project / project_name)) == 0
+    assert subprocess.check_call(["python", f"{project_name}/manage.py", "check"]) == 0

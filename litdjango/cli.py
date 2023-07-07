@@ -5,48 +5,59 @@ __all__ = ['StartProject', 'Export', 'StartApp', 'LitManagementUtility', 'cli']
 
 # %% ../nbs/cli.ipynb 4
 from collections import defaultdict
-import importlib
-import os
-from pathlib import Path
 import sys
 
-from django.core.management import ManagementUtility, execute_from_command_line, get_commands
+import django
+from django.conf import settings
+from django.core.management import ManagementUtility, get_commands
 from django.core.management.base import BaseCommand
 from django.core.management.color import color_style
 from django.core.management.commands.startapp import Command as StartApp
 from django.core.management.commands.startproject import Command as StartProject
+from nbdev.export import nb_export
+from pathlib import Path
 
-from .utils import LITDJANGO_ROOT
+from .utils import LITDJANGO_ROOT, get_project_config, get_project_root
 
-# %% ../nbs/cli.ipynb 6
+# %% ../nbs/cli.ipynb 7
 class StartProject(StartProject):
-
     rewrite_template_suffixes = (('.py-tpl', '.py'), (('.ipynb-tpl', '.ipynb')))
 
     def handle(self, **options):
         options["template"] = str(LITDJANGO_ROOT / "templates" / "project_template")
-        options["extensions"] = ['py', 'txt', 'ipynb']
+        options["extensions"] = ['py', 'txt', 'ipynb', 'ini']
         super().handle(**options)
 
-# %% ../nbs/cli.ipynb 8
+# %% ../nbs/cli.ipynb 13
 class Export(BaseCommand):
     help = "Export .ipynb notebooks to .py modules"
+    requires_system_checks = []
     
     def handle(self, *args, **options):
+        if not settings.configured:
+            settings.configure()
+            django.setup()
         self.stdout.write("Exporting...")
+        path = Path.cwd()
+        cfg = get_project_config(path)
+        project_root = get_project_root(path)
+        lib_path = project_root / cfg["lib_name"]
+        nbs_path = project_root / cfg["nbs_path"]
+        notebooks = [nb for nb in nbs_path.glob("**/*.ipynb")]
+        for nb in notebooks: nb_export(nb, lib_path)
 
-# %% ../nbs/cli.ipynb 9
+# %% ../nbs/cli.ipynb 16
 class StartApp(StartApp):
     pass
 
-# %% ../nbs/cli.ipynb 11
+# %% ../nbs/cli.ipynb 18
 lit_commands = {
     "startapp": StartApp(), # overrides django default
     "export": Export(), # new command
     "startproject": StartProject() #overrides django default
 }
 
-# %% ../nbs/cli.ipynb 12
+# %% ../nbs/cli.ipynb 19
 class LitManagementUtility(ManagementUtility):
     """The litdjango cli is an instance of this class
     
@@ -94,9 +105,7 @@ class LitManagementUtility(ManagementUtility):
                         % self.settings_exception
                     )
                 )
-
         return "\n".join(usage)
-
 
     def fetch_command(self, subcommand):
         """Use lit_commands version if it exists, otherwise fallback to django commands"""
@@ -106,7 +115,7 @@ class LitManagementUtility(ManagementUtility):
             # Fall back to default django  if we have not defined a custom command
             return super().fetch_command(subcommand)
 
-# %% ../nbs/cli.ipynb 15
+# %% ../nbs/cli.ipynb 20
 def cli():
     """This is set as entrypoint of the litdjango command in the package's setup.py"""
     utility = LitManagementUtility(sys.argv)

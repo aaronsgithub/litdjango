@@ -28,6 +28,7 @@ def created_project(tmp_path_factory):
 
 
 @pytest.mark.parametrize("path", [
+    # django files
     "nbs/",
     "nbs/manage.ipynb",
     "nbs/config/",
@@ -35,7 +36,17 @@ def created_project(tmp_path_factory):
     "nbs/config/wsgi.ipynb",
     "nbs/config/asgi.ipynb",
     "nbs/config/urls.ipynb",
-    f"{project_name}/"
+    # nbdev files
+    "nbs/README.ipynb",
+    "nbs/_quarto.yml",
+    "nbs/nbdev.yml",
+    "nbs/styles.css",
+    "settings.ini",
+    "setup.py",
+    f"{project_name}/",
+    f"{project_name}/__init__.py",
+    f"{project_name}/_modidx.py",
+    "README.md"
 ])
 def test_startproject_structure(created_project, path):
     output_path = created_project / path
@@ -74,3 +85,9 @@ def test_config_settings_module(created_project):
         contents = f.read()
         assert "litdjango" in contents, print_notebook_contents(contents)
         assert "SECRET_KEY" in contents, print_notebook_contents(contents)
+
+
+def test_settings_ini(created_project):
+    with open(created_project / "settings.ini") as f:
+        contents = f.read()
+        assert f"lib_name = {project_name}" in contents, print(contents)
